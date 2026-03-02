@@ -28,12 +28,12 @@ body {
   font-family: 'Sora', sans-serif;
   background: var(--bg);
   color: var(--text);
-  height: 100dvh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
-  overflow: hidden;
 }
 
+/* Mobile: full screen app feel */
 .app {
   width: 100%;
   max-width: 430px;
@@ -42,6 +42,87 @@ body {
   flex-direction: column;
   position: relative;
   overflow: hidden;
+}
+
+/* PC: centered card layout */
+@media (min-width: 768px) {
+  body {
+    align-items: center;
+    padding: 40px 20px;
+    overflow: auto;
+    background: radial-gradient(ellipse at top, rgba(249,115,22,0.06) 0%, transparent 60%), var(--bg);
+  }
+
+  .bg-glow {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%);
+  }
+
+  .app {
+    height: auto;
+    min-height: 600px;
+    max-width: 900px;
+    border-radius: 28px;
+    border: 1px solid var(--border);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+    overflow: visible;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .header {
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px 20px;
+  }
+
+  .header-top { margin-bottom: 20px; }
+  .header-info h1 { font-size: 1.2rem; }
+  .c-num { font-size: 2rem; }
+
+  .nav {
+    width: 200px;
+    flex-direction: column;
+    padding: 24px 16px;
+    border-right: 1px solid var(--border);
+    gap: 10px;
+    height: auto;
+    align-self: stretch;
+  }
+
+  .nav-btn {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-size: 0.82rem;
+  }
+
+  .nav-btn .nav-icon { font-size: 1.2rem; }
+
+  .scroll-area {
+    flex: 1;
+    height: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 28px 32px;
+  }
+
+  /* Bigger fonts on desktop */
+  .s-q { font-size: 0.9rem; }
+  .s-a { font-size: 0.84rem; }
+  .link-text h3 { font-size: 0.95rem; }
+  .clock-display { font-size: 5.5rem; }
+  .prog-item .prog-val { font-size: 1.6rem; }
+  .ctrl-btn { font-size: 0.95rem; padding: 18px; }
+
+  .progress-row { gap: 14px; }
+  .prog-item { padding: 16px; }
+
+  .mode-tabs { margin-bottom: 24px; }
+  .mode-tab { font-size: 0.8rem; padding: 10px; }
 }
 
 /* ── Animated Background ── */
@@ -525,9 +606,11 @@ body {
   <!-- Header -->
   <div class="header">
     <div class="header-top">
-
+      <div class="avatar-ring">
+        <img src="https://yt3.googleusercontent.com/RZkLuYh03Jo8ttGzayOq8uJl0qt4wkt4YqrWDPavTEhx7NHB4HjtkGfkYZBS2pc1VylrRzhxOA=s160-c-k-c0x00ffffff-no-rj" alt="Profile">
+      </div>
       <div class="header-info">
-        <h1>O/L Hub</h1>
+        <h1>Sadi Subha's O/L Hub</h1>
         <p>ශ්‍රේෂ්ඨ ශිෂ්‍යයා ජය ගනී</p>
       </div>
       <div class="badge">2026</div>
