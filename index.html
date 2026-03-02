@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>O/L Hub 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090d;
+  --surface: #0f1117;
+  --surface2: #161822;
+  --border: #1e2030;
+  --accent: #f97316;
+  --accent2: #fb923c;
+  --gold: #fbbf24;
+  --green: #22c55e;
+  --blue: #60a5fa;
+  --text: #f1f5f9;
+  --muted: #64748b;
+  --subtle: #334155;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.app {
+  width: 100%;
+  max-width: 430px;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Animated Background ── */
+.bg-noise {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-glow {
+  position: fixed;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 70%);
+  top: -100px; left: 50%; transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ── */
+.header {
+  padding: 16px 20px 12px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.avatar-ring {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  padding: 2px;
+  background: conic-gradient(var(--accent), var(--gold), var(--accent));
+  flex-shrink: 0;
+}
+.avatar-ring img {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  display: block;
+}
+
+.header-info { flex: 1; }
+.header-info h1 { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+.header-info p { font-size: 0.7rem; color: var(--muted); margin-top: 1px; }
+
+.badge {
+  background: rgba(249,115,22,0.15);
+  border: 1px solid rgba(249,115,22,0.3);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ── Countdown ── */
+.countdown-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.countdown-label {
+  font-size: 0.62rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.countdown-units {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  justify-content: space-around;
+}
+
+.c-unit {
+  text-align: center;
+  flex: 1;
+}
+
+.c-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  display: block;
+}
+
+.c-sep {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.5rem;
+  color: var(--subtle);
+  align-self: flex-start;
+  padding-top: 2px;
+}
+
+.c-label {
+  font-size: 0.55rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+  display: block;
+}
+
+.exam-tag {
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  color: #000;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 8px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1.3;
+}
+
+/* ── Navigation ── */
+.nav {
+  display: flex;
+  padding: 0 20px;
+  gap: 8px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.nav-btn {
+  flex: 1;
+  padding: 10px 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Sora', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-btn .nav-icon { font-size: 1.1rem; }
+
+.nav-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  box-shadow: 0 4px 20px rgba(249,115,22,0.3);
+}
+
+/* ── Scroll Area ── */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.scroll-area::-webkit-scrollbar { width: 0; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── Home Page ── */
+.section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  text-decoration: none;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.link-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.link-card:active::before { opacity: 1; }
+
+.link-card.yt::before { background: rgba(255,0,0,0.1); }
+.link-card.wa::before { background: rgba(37,211,102,0.1); }
+
+.link-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.link-card.yt .link-icon { background: rgba(255,0,0,0.15); }
+.link-card.wa .link-icon { background: rgba(37,211,102,0.15); }
+
+.link-text h3 { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+.link-text p { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+.link-arrow { margin-left: auto; color: var(--subtle); font-size: 1rem; }
+
+.divider { height: 1px; background: var(--border); margin: 18px 0; }
+
+.tip-card {
+  background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(251,191,36,0.08));
+  border: 1px solid rgba(249,115,22,0.2);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.tip-card h3 { font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.tip-card p { font-size: 0.78rem; color: var(--text); line-height: 1.6; opacity: 0.85; }
+
+.progress-row { display: flex; gap: 10px; margin-top: 12px; }
+
+.prog-item {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.prog-item .prog-val { font-family: 'Space Mono', monospace; font-size: 1.3rem; font-weight: 700; }
+.prog-item .prog-key { font-size: 0.6rem; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.prog-item.p-orange .prog-val { color: var(--accent); }
+.prog-item.p-gold .prog-val { color: var(--gold); }
+.prog-item.p-green .prog-val { color: var(--green); }
+
+/* ── Timer Page ── */
+.mode-tabs {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.mode-tab {
+  flex: 1;
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Sora', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mode-tab.active {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.clock-face {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.clock-face::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.clock-display {
+  font-family: 'Space Mono', monospace;
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 4px;
+  line-height: 1;
+}
+
+.clock-display.running { color: var(--accent); }
+
+.clock-label {
+  font-size: 0.65rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 10px;
+}
+
+.ctrl-row {
+  display: flex;
+  gap: 12px;
+}
+
+.ctrl-btn {
+  flex: 1;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-start { background: var(--accent); color: white; }
+.btn-start:active { background: var(--accent2); }
+.btn-reset { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+
+.timer-info {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.t-info-card {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.t-info-card .t-val { font-family: 'Space Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--blue); }
+.t-info-card .t-key { font-size: 0.6rem; color: var(--muted); margin-top: 2px; text-transform: uppercase; }
+
+/* ── Study Page ── */
+.search-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px 12px 40px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--muted); }
+
+.struggle-count {
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.s-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.s-card:active { border-color: var(--accent); }
+
+.s-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.s-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--accent);
+  background: rgba(249,115,22,0.1);
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.s-q { font-size: 0.82rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+
+.s-a {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  display: none;
+}
+
+.s-card.open .s-a { display: block; }
+.s-card.open { border-color: rgba(249,115,22,0.3); }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page.active > * { animation: fadeUp 0.3s ease forwards; }
+.page.active > *:nth-child(2) { animation-delay: 0.04s; }
+.page.active > *:nth-child(3) { animation-delay: 0.08s; }
+.page.active > *:nth-child(4) { animation-delay: 0.12s; }
+</style>
+</head>
+<body>
+
+<div class="bg-noise"></div>
+<div class="bg-glow"></div>
+
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div class="avatar-ring">
+        <img src="https://yt3.googleusercontent.com/RZkLuYh03Jo8ttGzayOq8uJl0qt4wkt4YqrWDPavTEhx7NHB4HjtkGfkYZBS2pc1VylrRzhxOA=s160-c-k-c0x00ffffff-no-rj" alt="Profile">
+      </div>
+      <div class="header-info">
+        <h1>Sadi Subha's O/L Hub</h1>
+        <p>ශ්‍රේෂ්ඨ ශිෂ්‍යයා ජය ගනී</p>
+      </div>
+      <div class="badge">2026</div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown-bar">
+      <div class="countdown-label">O/L Exam</div>
+      <div class="countdown-units">
+        <div class="c-unit">
+          <span class="c-num" id="days">000</span>
+          <span class="c-label">Days</span>
+        </div>
+        <div class="c-sep">:</div>
+        <div class="c-unit">
+          <span class="c-num" id="hours">00</span>
+          <span class="c-label">Hrs</span>
+        </div>
+        <div class="c-sep">:</div>
+        <div class="c-unit">
+          <span class="c-num" id="mins">00</span>
+          <span class="c-label">Min</span>
+        </div>
+        <div class="c-sep">:</div>
+        <div class="c-unit">
+          <span class="c-num" id="secs">00</span>
+          <span class="c-label">Sec</span>
+        </div>
+      </div>
+      <div class="exam-tag">Dec 8<br>2026</div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="switchTab('home', this)">
+      <span class="nav-icon">🏠</span> Home
+    </button>
+    <button class="nav-btn" onclick="switchTab('timer', this)">
+      <span class="nav-icon">⏱️</span> Timer
+    </button>
+    <button class="nav-btn" onclick="switchTab('study', this)">
+      <span class="nav-icon">📖</span> Solutions
+    </button>
+  </div>
+
+  <!-- Scroll Area -->
+  <div class="scroll-area">
+
+    <!-- Home -->
+    <div id="home" class="page active">
+
+      <div class="section-title">Connect</div>
+
+      <a href="https://youtube.com/@life-with-sadi" class="link-card yt">
+        <div class="link-icon">▶️</div>
+        <div class="link-text">
+          <h3>Subscribe on YouTube</h3>
+          <p>Study vlogs, tips & motivation</p>
+        </div>
+        <div class="link-arrow">›</div>
+      </a>
+
+      <a href="https://whatsapp.com/channel/0029VabpCBx7z4kaQ0cZQS3r" class="link-card wa">
+        <div class="link-icon">💬</div>
+        <div class="link-text">
+          <h3>WhatsApp Channel</h3>
+          <p>Daily updates & resources</p>
+        </div>
+        <div class="link-arrow">›</div>
+      </a>
+
+      <div class="divider"></div>
+      <div class="section-title">Your Status</div>
+
+      <div class="progress-row">
+        <div class="prog-item p-orange">
+          <div class="prog-val" id="stat-days">—</div>
+          <div class="prog-key">Days Left</div>
+        </div>
+        <div class="prog-item p-gold">
+          <div class="prog-val">09</div>
+          <div class="prog-key">Subjects</div>
+        </div>
+        <div class="prog-item p-green">
+          <div class="prog-val">A</div>
+          <div class="prog-key">Your Goal</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="tip-card">
+        <h3>💡 Today's Reminder</h3>
+        <p id="daily-tip">Loading tip...</p>
+      </div>
+
+    </div>
+
+    <!-- Timer -->
+    <div id="timer" class="page">
+
+      <div class="mode-tabs">
+        <button class="mode-tab active" onclick="setMode('pomodoro',this)">🍅 Pomodoro</button>
+        <button class="mode-tab" onclick="setMode('stopwatch',this)">⏱ Stopwatch</button>
+        <button class="mode-tab" onclick="setMode('custom',this)">⏰ 10 Min</button>
+      </div>
+
+      <div class="clock-face">
+        <div class="clock-display" id="clock-display">25:00</div>
+        <div class="clock-label" id="clock-label">Pomodoro • 25 Minutes</div>
+      </div>
+
+      <div class="ctrl-row">
+        <button class="ctrl-btn btn-start" id="start-btn" onclick="startLogic()">▶ Start</button>
+        <button class="ctrl-btn btn-reset" onclick="resetLogic()">↺ Reset</button>
+      </div>
+
+      <div class="timer-info">
+        <div class="t-info-card">
+          <div class="t-val" id="session-count">0</div>
+          <div class="t-key">Sessions</div>
+        </div>
+        <div class="t-info-card">
+          <div class="t-val" id="total-mins">0</div>
+          <div class="t-key">Total Mins</div>
+        </div>
+        <div class="t-info-card">
+          <div class="t-val" id="streak-val">🔥 0</div>
+          <div class="t-key">Streak</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Study -->
+    <div id="study" class="page">
+
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search" class="search-input" placeholder="ගැටලුව සොයන්න..." oninput="filterCards()">
+      </div>
+
+      <div class="struggle-count" id="struggle-count">50 solutions found</div>
+
+      <div id="cards-container"></div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Tab Switch ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Countdown ──
+const target = new Date("Dec 8, 2026 00:00:00").getTime();
+function updateCountdown() {
+  const diff = target - Date.now();
+  if (diff <= 0) return;
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('days').textContent = String(d).padStart(3,'0');
+  document.getElementById('hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('mins').textContent = String(m).padStart(2,'0');
+  document.getElementById('secs').textContent = String(s).padStart(2,'0');
+  document.getElementById('stat-days').textContent = d;
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ── Timer ──
+let timerInterval, seconds = 1500, isRunning = false, mode = 'pomodoro';
+let sessionCount = 0, totalMins = 0, streak = 0;
+
+function setMode(m, btn) {
+  mode = m;
+  document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (m === 'pomodoro') { seconds = 1500; document.getElementById('clock-label').textContent = 'Pomodoro • 25 Minutes'; }
+  else if (m === 'stopwatch') { seconds = 0; document.getElementById('clock-label').textContent = 'Stopwatch'; }
+  else { seconds = 600; document.getElementById('clock-label').textContent = 'Focus Timer • 10 Minutes'; }
+  resetLogic(true);
+}
+
+function updateClockDisplay() {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  document.getElementById('clock-display').textContent =
+    String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+function startLogic() {
+  const btn = document.getElementById('start-btn');
+  const disp = document.getElementById('clock-display');
+  if (isRunning) {
+    clearInterval(timerInterval);
+    btn.textContent = '▶ Start';
+    disp.classList.remove('running');
+  } else {
+    timerInterval = setInterval(() => {
+      if (mode === 'stopwatch') { seconds++; }
+      else if (seconds > 0) { seconds--; }
+      else {
+        clearInterval(timerInterval);
+        sessionCount++;
+        totalMins += mode === 'pomodoro' ? 25 : 10;
+        streak++;
+        document.getElementById('session-count').textContent = sessionCount;
+        document.getElementById('total-mins').textContent = totalMins;
+        document.getElementById('streak-val').textContent = '🔥 ' + streak;
+        isRunning = false;
+        btn.textContent = '▶ Start';
+        disp.classList.remove('running');
+        return;
+      }
+      updateClockDisplay();
+    }, 1000);
+    btn.textContent = '⏸ Pause';
+    disp.classList.add('running');
+  }
+  isRunning = !isRunning;
+}
+
+function resetLogic(silent = false) {
+  clearInterval(timerInterval);
+  isRunning = false;
+  if (mode === 'pomodoro') seconds = 1500;
+  else if (mode === 'stopwatch') seconds = 0;
+  else seconds = 600;
+  document.getElementById('start-btn').textContent = '▶ Start';
+  document.getElementById('clock-display').classList.remove('running');
+  updateClockDisplay();
+}
+
+updateClockDisplay();
+
+// ── Solutions ──
+const struggles = [
+  { q: "Sleepy while reading? (නිදිමත)", a: "Stand up and walk while reading. Splash ice-cold water on your face." },
+  { q: "Social Media Distraction?", a: "Delete TikTok/Insta. Your future O/L result is more important than a 15-second reel." },
+  { q: "Maths feels like a nightmare?", a: "Don't read Maths. Do Maths. Solve 5 problems every morning before anything else." },
+  { q: "Fear of Failing? (අසමත් වෙයි කියා බය)", a: "Fear comes from lack of preparation. Start small. One lesson at a time." },
+  { q: "Bored with History? (ඉතිහාසය එපා වෙලා)", a: "Watch documentaries or imagine it's a movie story. Draw a timeline with pictures." },
+  { q: "Parents Pressuring you?", a: "Talk to them. Show them your study plan. They just want you to succeed." },
+  { q: "Science Formulas are confusing?", a: "Write them on your wall. Look at them while brushing your teeth every day." },
+  { q: "Can't wake up early? (පාන්දර ඇහැරෙන්න බෑ)", a: "Set an alarm and keep the phone at the OTHER end of the room." },
+  { q: "Procrastination (පසුවට තැබීම)", a: "Follow the 2-minute rule: If a task takes less than 2 mins, do it NOW." },
+  { q: "Forget what you learned?", a: "Teach it to an imaginary friend. Teaching is the best way to remember." },
+  { q: "Noise in the house?", a: "Study early morning (4 AM) or late night when everyone is asleep." },
+  { q: "Handwriting is bad?", a: "Don't worry too much, but ensure it is readable. Examiners need to understand your answer." },
+  { q: "Essay writing is hard?", a: "Read daily newspapers. Note down good phrases and use them in your writing." },
+  { q: "Phone notification 'Ding'?", a: "Turn off all notifications. Use 'Do Not Disturb' mode during study hours." },
+  { q: "Feeling lonely while studying?", a: "Join a study group vlogs (like mine!) to feel motivated and connected." },
+  { q: "Slow writing speed?", a: "Time yourself with a stopwatch while doing past papers." },
+  { q: "Can't understand a lesson?", a: "Check YouTube for 'O/L Science in Sinhala'. Sometimes a video explains better." },
+  { q: "Forgot to take breaks?", a: "Use Pomodoro: 25 mins study, 5 mins break. Your brain needs to rest to save info." },
+  { q: "Comparing with 'Bright' friends?", a: "Your competition is with your yesterday self. Not with others." },
+  { q: "English Grammar is hard?", a: "Listen to English songs or movies. Learning by hearing is faster than by rules." },
+  { q: "Too many lessons left?", a: "Make a priority list. Focus on high-weightage lessons first." },
+  { q: "Tired after school/tuition?", a: "Take a 20-minute power nap. Don't push a tired brain." },
+  { q: "Thinking about the Crush?", a: "Love can wait, but O/Ls won't. Get that 'A' first to be more impressive later!" },
+  { q: "Messy study desk?", a: "Clean desk = Clean mind. Organize your books before you start." },
+  { q: "No motivation to start?", a: "Watch one motivational video, then IMMEDIATELY open the book." },
+  { q: "Can't remember Commerce terms?", a: "Relate them to a real shop or business you know." },
+  { q: "Geography Maps are hard?", a: "Trace maps on a window glass to practice the outlines." },
+  { q: "Stressed about the time left?", a: "Every day counts. Start TODAY." },
+  { q: "Hungry while studying?", a: "Eat fruits or nuts. Avoid sugary biscuits that make you crash." },
+  { q: "Music or Silence?", a: "Instrumental Lo-fi is okay, but avoid songs with lyrics; they distract your reading." },
+  { q: "Not enough Past Papers?", a: "Download them from e-thaksalawa or buy a pilot paper book." },
+  { q: "Health is failing?", a: "Drink 2L of water and sleep at least 6 hours. A sick student cannot study." },
+  { q: "Exam Hall Panic?", a: "Close eyes, take 3 deep breaths. It's just a piece of paper, you've got this." },
+  { q: "Art/Music/Drama wasting time?", a: "These are 'Relaxing' subjects. Use them as a break from Maths/Science." },
+  { q: "Teachers are too fast?", a: "Don't be shy. Ask questions or mark it and search online later." },
+  { q: "Forgot the Calculator?", a: "For O/L, you must master manual calculations. Don't rely on tech." },
+  { q: "Writing 'Short Notes' takes too long?", a: "Use mind maps or flow charts instead of long sentences." },
+  { q: "Can't finish the paper on time?", a: "Practice 'Selection'. Do the easy questions first to secure marks." },
+  { q: "Sinhala Sahithya is boring?", a: "Try to understand the emotion of the poet. It's like a song." },
+  { q: "ICT Practical doubts?", a: "Try using the software on a PC if possible. Practical experience stays in mind." },
+  { q: "Thinking about the future too much?", a: "Focus on the next hour. The future is built by what you do NOW." },
+  { q: "Feel like giving up?", a: "Remember why you started. Think about your parents' happy faces." },
+  { q: "Negative friends?", a: "Stay away from people who say 'This is impossible'. Surround yourself with strivers." },
+  { q: "Books are too expensive?", a: "Borrow from the library or exchange with seniors who finished O/L." },
+  { q: "Daydreaming?", a: "Keep a 'distraction pad'. Write the random thought down and tell yourself 'I will think about this later'." },
+  { q: "Can't sit for long?", a: "Try the 'Standing Desk' method or move every 30 minutes." },
+  { q: "Is O/L really important?", a: "It's the first big gate. Opening it with 'A's makes everything else easier." },
+  { q: "Religion/Civics feels too much reading?", a: "Read it like a storybook before sleeping. It sticks better." },
+  { q: "What if I get a 'C'?", a: "A 'C' is a pass, but aim for 'A' so you have NO regrets." },
+  { q: "Feeling like you know nothing?", a: "This is a common trick of the brain. Start a paper, and you'll see how much you know." }
+];
+
+const tips = [
+  "ඔබ ඔබේ ඊයේ ආත්මය සමඟ තරඟ කරන්නේය — වෙනත් කෙනෙකු සමඟ නොවේ.",
+  "Start small. One page a day beats zero pages all week.",
+  "298 days is plenty. What matters is what you do TODAY.",
+  "Tired? Take 20 mins rest. Then come back stronger.",
+  "Every 'A' grade student was once a beginner. Keep going."
+];
+
+function renderCards(list) {
+  const c = document.getElementById('cards-container');
+  c.innerHTML = list.map((s, i) => `
+    <div class="s-card" onclick="this.classList.toggle('open')">
+      <div class="s-card-header">
+        <div class="s-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="s-q">${s.q}</div>
+      </div>
+      <div class="s-a">${s.a}</div>
+    </div>
+  `).join('');
+}
+
+function filterCards() {
+  const val = document.getElementById('search').value.toLowerCase();
+  const filtered = val ? struggles.filter(s => (s.q+s.a).toLowerCase().includes(val)) : struggles;
+  document.getElementById('struggle-count').textContent = `${filtered.length} solutions found`;
+  renderCards(filtered);
+}
+
+renderCards(struggles);
+
+// Daily tip
+document.getElementById('daily-tip').textContent = tips[new Date().getDay() % tips.length];
+</script>
+</body>
+</html>
